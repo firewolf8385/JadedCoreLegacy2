@@ -22,57 +22,37 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedcore;
+package net.jadedmc.jadedcore.settings;
 
-import net.jadedmc.jadedcore.networking.InstanceMonitor;
-import net.jadedmc.jadedcore.settings.HookManager;
-import net.jadedmc.jadedcore.settings.SettingsManager;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.jadedmc.jadedcore.JadedCorePlugin;
 
-public class JadedCorePlugin extends JavaPlugin {
-    private HookManager hookManager;
-    private InstanceMonitor instanceMonitor;
-    private SettingsManager settingsManager;
+/**
+ * Manages hooks into various external plugins.
+ */
+public class HookManager {
+    private final JadedCorePlugin plugin;
 
     /**
-     * Runs when the plugin is enabled.
+     * Creates the HookManager.
+     * @param plugin Instance of the plugin.
      */
-    @Override
-    public void onEnable() {
-        settingsManager = new SettingsManager(this);
-        hookManager = new HookManager(this);
-        instanceMonitor = new InstanceMonitor();
+    public HookManager(final JadedCorePlugin plugin) {
+        this.plugin = plugin;
     }
 
     /**
-     * Runs when the plugin is disabled.
+     * Get if the plugin should interact with JadedChat.
+     * @return Whether JadedChat is enabled.
      */
-    @Override
-    public void onDisable() {
-        // TODO: Delete Instance cache from Redis
+    public boolean useJadedChat() {
+        return plugin.getServer().getPluginManager().isPluginEnabled("JadedChat");
     }
 
     /**
-     * Get the HookManager.
-     * @return Hook Manager.
+     * Get if the plugin should interact with HyNick.
+     * @return Whether HyNick is enabled.
      */
-    public HookManager getHookManager() {
-        return hookManager;
-    }
-
-    /**
-     * Get the InstanceMonitor.
-     * @return Instance Monitor.
-     */
-    public InstanceMonitor getInstanceMonitor() {
-        return instanceMonitor;
-    }
-
-    /**
-     * Get the SettingsManager.
-     * @return Settings Manager.
-     */
-    public SettingsManager getSettingsManager() {
-        return settingsManager;
+    public boolean useHyNick() {
+        return plugin.getServer().getPluginManager().isPluginEnabled("HyNick");
     }
 }

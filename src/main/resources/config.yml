@@ -1,0 +1,16 @@
+############################################
+# Server-Specific Data
+############################################
+serverName: "lobby"
+serverGame: LOBBY
+
+
+############################################
+# Worlds
+############################################
+
+# The list of worlds that should be updated on startup.
+# Format:
+# Worlds:
+#   world: fileName
+Worlds: []
