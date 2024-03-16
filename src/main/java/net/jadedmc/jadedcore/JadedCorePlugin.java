@@ -24,6 +24,9 @@
  */
 package net.jadedmc.jadedcore;
 
+import net.jadedmc.jadedcore.databases.MongoDB;
+import net.jadedmc.jadedcore.databases.MySQL;
+import net.jadedmc.jadedcore.databases.Redis;
 import net.jadedmc.jadedcore.networking.InstanceMonitor;
 import net.jadedmc.jadedcore.settings.HookManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
@@ -32,6 +35,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class JadedCorePlugin extends JavaPlugin {
     private HookManager hookManager;
     private InstanceMonitor instanceMonitor;
+    private MongoDB mongoDB;
+    private MySQL mySQL;
+    private Redis redis;
     private SettingsManager settingsManager;
 
     /**
@@ -39,8 +45,16 @@ public class JadedCorePlugin extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        // Load settings.
         settingsManager = new SettingsManager(this);
         hookManager = new HookManager(this);
+
+        // Load Databases
+        mongoDB = new MongoDB(this);
+        mySQL = new MySQL(this);
+        mySQL.openConnection();
+        redis = new Redis(this);
+
         instanceMonitor = new InstanceMonitor();
     }
 
@@ -66,6 +80,30 @@ public class JadedCorePlugin extends JavaPlugin {
      */
     public InstanceMonitor getInstanceMonitor() {
         return instanceMonitor;
+    }
+
+    /**
+     * Gets the MongoDB connection.
+     * @return MongoDB.
+     */
+    public MongoDB getMongoDB() {
+        return mongoDB;
+    }
+
+    /**
+     * Be able to connect to MySQL.
+     * @return MySQL.
+     */
+    public MySQL getMySQL() {
+        return mySQL;
+    }
+
+    /**
+     * Gets the Redis connection.
+     * @return Redis.
+     */
+    public Redis getRedis() {
+        return redis;
     }
 
     /**
